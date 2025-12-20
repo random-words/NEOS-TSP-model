@@ -1,0 +1,239 @@
+{
+  "meta": {
+    "project": "WIN – Wine Router",
+    "region": "Zakarpattia, Ukraine",
+    "currency": "UAH",
+    "generatedAt": "2025-12-20T00:00:00Z",
+    "count": 10
+  },
+  "locations": [
+    {
+      "id": 1,
+      "name": "Середнянський замок",
+      "type": "other",
+      "coordinates": {
+        "lat": 48.5389965,
+        "lng": 22.4974842
+      },
+      "address": null,
+      "openingHours": "always_open",
+      "avgStayMinutes": 90,
+      "priceLevel": 475,
+      "rating": null,
+      "wineTags": [],
+      "experienceTags": [],
+      "avgTastingPricePerPerson": 250,
+      "avgMealPricePerPerson": 300,
+      "avgBottlePrice": 200,
+      "site": "https://www.karpaty.info/ua/uk/zk/ug/serednie/sights/zamok/",
+      "contacts": null
+    },
+    {
+      "id": 2,
+      "name": "Водоспад Шипіт",
+      "type": "other",
+      "coordinates": {
+        "lat": 48.6563799,
+        "lng": 23.2689705
+      },
+      "address": null,
+      "openingHours": null,
+      "avgStayMinutes": 180,
+      "priceLevel": 600,
+      "rating": null,
+      "wineTags": [],
+      "experienceTags": [],
+      "avgTastingPricePerPerson": 300,
+      "avgMealPricePerPerson": 500,
+      "avgBottlePrice": 200,
+      "site": "https://shipit-hotel.com.ua/",
+      "contacts": {
+        "phone": "+380666800404"
+      }
+    },
+    {
+      "id": 3,
+      "name": "Дім дегустацій – Шато Чизай",
+      "type": "winery",
+      "coordinates": {
+        "lat": 48.2263072,
+        "lng": 22.6402141
+      },
+      "address": null,
+      "openingHours": "9 am–6 pm",
+      "avgStayMinutes": 90,
+      "priceLevel": 1000,
+      "rating": null,
+      "wineTags": [],
+      "experienceTags": [],
+      "avgTastingPricePerPerson": 400,
+      "avgMealPricePerPerson": null,
+      "avgBottlePrice": 600,
+      "site": "https://chizay.com/",
+      "contacts": {
+        "phone": "+380504320525"
+      }
+    },
+    {
+      "id": 4,
+      "name": "Середнянські винні погреби",
+      "type": "wine_cellar",
+      "coordinates": {
+        "lat": 48.5374686,
+        "lng": 22.5059702
+      },
+      "address": null,
+      "openingHours": "8 am–12 pm",
+      "avgStayMinutes": 90,
+      "priceLevel": 600,
+      "rating": null,
+      "wineTags": [],
+      "experienceTags": [],
+      "avgTastingPricePerPerson": 300,
+      "avgMealPricePerPerson": 400,
+      "avgBottlePrice": 250,
+      "site": null,
+      "contacts": {
+        "phone": "+380958971438"
+      }
+    },
+    {
+      "id": 5,
+      "name": "Будинок вина \"Берегвідек\"",
+      "type": "tasting_room",
+      "coordinates": {
+        "lat": 48.2521733,
+        "lng": 22.6267548
+      },
+      "address": null,
+      "openingHours": "8 am–8 pm",
+      "avgStayMinutes": 60,
+      "priceLevel": 800,
+      "rating": null,
+      "wineTags": [],
+      "experienceTags": [],
+      "avgTastingPricePerPerson": 800,
+      "avgMealPricePerPerson": 800,
+      "avgBottlePrice": null,
+      "site": null,
+      "contacts": {
+        "phone": "+380502644233"
+      }
+    },
+    {
+      "id": 6,
+      "name": "Деренівська Купіль",
+      "type": "hotel",
+      "coordinates": {
+        "lat": 48.5645794,
+        "lng": 22.4429648
+      },
+      "address": null,
+      "openingHours": "9 am–11 pm",
+      "avgStayMinutes": 60,
+      "priceLevel": 1800,
+      "rating": null,
+      "wineTags": [],
+      "experienceTags": [],
+      "avgTastingPricePerPerson": 300,
+      "avgMealPricePerPerson": 800,
+      "avgBottlePrice": 1250,
+      "site": "https://derenivska-kupil.ua/",
+      "contacts": {
+        "phone": "+380312428060"
+      }
+    },
+    {
+      "id": 7,
+      "name": "Мукачівський Замок",
+      "type": "other",
+      "coordinates": {
+        "lat": 48.4316545,
+        "lng": 22.6874766
+      },
+      "address": null,
+      "openingHours": "9 am–5 pm",
+      "avgStayMinutes": 150,
+      "priceLevel": 160,
+      "rating": null,
+      "wineTags": [],
+      "experienceTags": [],
+      "avgTastingPricePerPerson": 120,
+      "avgMealPricePerPerson": 200,
+      "avgBottlePrice": null,
+      "site": "https://www.facebook.com/Palanokmuseum/",
+      "contacts": {
+        "phone": "+380992732199"
+      }
+    },
+    {
+      "id": 8,
+      "name": "Ресторан \"Chizay. Мала Гора\"",
+      "type": "restaurant",
+      "coordinates": {
+        "lat": 48.1836854,
+        "lng": 22.6579374
+      },
+      "address": null,
+      "openingHours": "12 pm–11 pm",
+      "avgStayMinutes": 90,
+      "priceLevel": 1000,
+      "rating": null,
+      "wineTags": [],
+      "experienceTags": [],
+      "avgTastingPricePerPerson": 400,
+      "avgMealPricePerPerson": null,
+      "avgBottlePrice": 600,
+      "site": "https://chizaymalagora.com/",
+      "contacts": {
+        "phone": "+380956489644"
+      }
+    },
+    {
+      "id": 9,
+      "name": "Дегустаційний зал «СироВина», Ужгород",
+      "type": "tasting_room",
+      "coordinates": {
+        "lat": 48.6233443,
+        "lng": 22.3017955
+      },
+      "address": null,
+      "openingHours": "11 am–10 pm",
+      "avgStayMinutes": 90,
+      "priceLevel": 850,
+      "rating": null,
+      "wineTags": [],
+      "experienceTags": [],
+      "avgTastingPricePerPerson": 400,
+      "avgMealPricePerPerson": 400,
+      "avgBottlePrice": 450,
+      "site": "http://www.instagram.com/sirowina_uzhhorod",
+      "contacts": {
+        "phone": "+380506982290"
+      }
+    },
+    {
+      "id": 10,
+      "name": "Винні підвали сім'ї Урста (біля Мужієва)",
+      "type": "wine_cellar",
+      "coordinates": {
+        "lat": 48.1730381,
+        "lng": 22.7428415
+      },
+      "address": null,
+      "openingHours": "always_open",
+      "avgStayMinutes": 90,
+      "priceLevel": 150,
+      "rating": null,
+      "wineTags": [],
+      "experienceTags": [],
+      "avgTastingPricePerPerson": 150,
+      "avgMealPricePerPerson": 150,
+      "avgBottlePrice": null,
+      "site": "https://www.facebook.com/urstawine/?locale=ru_RU",
+      "contacts": {
+        "phone": "+380992377778"
+      }
+    }
+  ]
+}
