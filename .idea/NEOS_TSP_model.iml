@@ -5,7 +5,7 @@
       <excludeFolder url="file://$MODULE_DIR$/.venv" />
       <excludeFolder url="file://$MODULE_DIR$/math_model/models" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.14 (NEOS_TSP_model)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.11 (NEOS-TSP-model)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
