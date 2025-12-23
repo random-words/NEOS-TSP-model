@@ -1,3 +1,5 @@
+# create an image   npm install, npm run build docker compose   =>  image 
+
 # ---------- Build stage ----------
 FROM node:22-alpine AS builder
 
