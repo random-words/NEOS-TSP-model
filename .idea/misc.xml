@@ -3,5 +3,5 @@
   <component name="Black">
     <option name="sdkName" value="Python 3.14 (NEOS_TSP_model)" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.11 (NEOS-TSP-model)" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.11 (NEOS_TSP_model)" project-jdk-type="Python SDK" />
 </project>
