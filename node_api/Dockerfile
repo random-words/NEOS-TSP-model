@@ -1,33 +1,20 @@
-# create an image   npm install, npm run build docker compose   =>  image 
-
-# ---------- Build stage ----------
-FROM node:22-alpine AS builder
-
+# ---- Build stage ----
+FROM node:20-alpine AS builder
 WORKDIR /app
 
-# Install deps first (better layer caching)
-COPY package*.json ./
+# Copy lockfiles first for caching
+COPY package.json package-lock.json ./
+
+# Deterministic install (fails if lock not in sync)
 RUN npm ci
 
-# Copy source + build
+# Copy source
 COPY . .
+
+# Build Nest -> dist/
 RUN npm run build
 
-# # ---------- Runtime stage ----------
-# FROM node:22-alpine AS runner
-
-# ENV NODE_ENV=production
-# WORKDIR /app
-
-# # Copy only what is needed to run
-# COPY package*.json ./
-# # Install only production deps
-# RUN npm ci --omit=dev && npm cache clean --force
-
-# # Copy compiled output from builder
-# COPY --from=builder /app/dist ./dist
-
-# # Nest default port (change if your app uses another one)
-# EXPOSE 3000
-
-# CMD ["node", "dist/main"]
+# ---- Artifact stage (just compiled output) ----
+FROM scratch AS artifact
+COPY --from=builder /app/dist /dist
+COPY --from=builder /app/package.json /package.json
