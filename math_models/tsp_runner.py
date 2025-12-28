@@ -2,17 +2,18 @@ import os
 import pandas as pd
 from pyomo.environ import Constraint, Objective, minimize, value
 
-from tsp_helpers import (
+from math_models.tsp_helpers import (
     load_geo_dataframe, load_tsplib_data,
     build_distance_matrix, coords_dict,
     selected_edges_from_model, reconstruct_tour,
     plot_tsp_tour, solve_on_neos
 )
 
-from tsp_model_kcycle import (
+from math_models.tsp_model_kcycle import (
     create_tsp_model, set_connectivity,
     attach_total_distance, attach_budget, attach_time
 )
+
 
 
 class KCycleTSPRunner:
