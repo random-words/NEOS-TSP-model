@@ -14,4 +14,5 @@ async function bootstrap() {
   console.log(`Database connected successfully.`);
   console.log(`Server running! http://localhost:${PORT}`);
 }
+
 bootstrap();
