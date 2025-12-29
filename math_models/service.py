@@ -28,7 +28,11 @@ class KCycleTSPService:
         tsplib_path = payload.get("tsplib_path") or payload.get("tsplibPath") or str(default_tsplib_path)
 
         s_value = payload.get("s_value", 1)
+        if s_value is None:
+            return {"ok": False, "error": "s_value is required"}
         k_value = payload["k_value"]
+        if k_value is None:
+            return {"ok": False, "error": "k_value is required"}
 
         group_size = payload.get("group_size", 1)
         speed_kmph = float(payload.get("speed_kmph", 50.0))
