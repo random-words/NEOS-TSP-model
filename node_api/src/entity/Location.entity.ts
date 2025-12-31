@@ -5,13 +5,13 @@ export type LocationDocument = HydratedDocument<Location>;
 
 @Schema()
 export class Location {
-  @Prop()
+  @Prop({ required: true })
   name: string;
 
-  @Prop()
+  @Prop({ required: true })
   lat: number;
 
-  @Prop()
+  @Prop({ required: true })
   lng: number;
 }
 

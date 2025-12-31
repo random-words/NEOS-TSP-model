@@ -5,7 +5,7 @@ export type RouteDocument = HydratedDocument<Route>;
 
 @Schema()
 export class Route {
-  @Prop()
+  @Prop({ required: true })
   name: string;
 }
 

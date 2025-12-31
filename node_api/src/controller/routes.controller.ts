@@ -1,4 +1,5 @@
 import { Controller } from '@nestjs/common';
+import { RoutesControllerMap } from './controllers.map';
 
-@Controller('routes')
+@Controller(RoutesControllerMap.name)
 export class RoutesController {}
