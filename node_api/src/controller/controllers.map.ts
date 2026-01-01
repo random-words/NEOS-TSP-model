@@ -17,4 +17,5 @@ export const RoutesControllerMap = {
   UPDATE: ':id',
   DELETE: ':id',
   OPTIMIZE: ':id/optimize',
+  GET_ANCHORS: 'anchors',
 } as const;

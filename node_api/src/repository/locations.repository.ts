@@ -5,9 +5,12 @@ import { Location } from 'src/entity/Location.entity';
 
 @Injectable()
 export class LocationsRepository {
+  rootModel: Model<Location>;
   constructor(
     @InjectModel(Location.name) private readonly locationModel: Model<Location>,
-  ) {}
+  ) {
+    this.rootModel = locationModel;
+  }
 
   async findAll(): Promise<Location[]> {
     return this.locationModel.find().exec();

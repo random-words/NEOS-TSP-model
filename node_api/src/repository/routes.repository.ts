@@ -5,7 +5,10 @@ import { Route } from 'src/entity/Route.entity';
 
 @Injectable()
 export class RoutesRepository {
+  rootModel: Model<Route>;
   constructor(
     @InjectModel(Route.name) private readonly routeModel: Model<Route>,
-  ) {}
+  ) {
+    this.rootModel = this.routeModel;
+  }
 }
