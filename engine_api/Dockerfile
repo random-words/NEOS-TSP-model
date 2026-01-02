@@ -16,7 +16,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # copy source code (monorepo → только python-сервис)
-COPY math_models ./math_models
+COPY math_service ./math_models
 COPY wineapp ./wineapp
 
 # python import path

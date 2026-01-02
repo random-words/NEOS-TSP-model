@@ -3,7 +3,7 @@
 # ----------------------------
 DATA_SOURCE = "excel"   # "excel" або "tsplib"
 
-EXCEL_PATH = "data-model/Data Model.xlsx"
+EXCEL_PATH = "../data-model/Data Model.xlsx"
 TSPLIB_PATH = "TSPLib-data/eil76.tsp"
 
 NEOS_EMAIL = "antonsivko480@gmail.com"

@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-from math_models.service import KCycleTSPService
+from engine_api.math_service.service import KCycleTSPService
 
 class PingView(APIView):
     def get(self, request):
