@@ -27,6 +27,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
       status = HttpStatus.BAD_REQUEST;
       code = 'VALIDATION_ERROR';
       message = 'Validation failed';
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
       details = exception.getZodError().issues;
     } else if (exception instanceof HttpException) {
       status = exception.getStatus();
@@ -37,6 +39,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
         message = payload;
       } else if (payload && typeof payload === 'object') {
         const p: any = payload;
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         const m = p.message ?? exception.message;
         message = Array.isArray(m) ? m.join('; ') : String(m);
         details = p;
@@ -48,10 +51,13 @@ export class AllExceptionsFilter implements ExceptionFilter {
       details = { name: exception.name };
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
     const url = (req as any).originalUrl ?? req.url;
     const logLine = `${req.method} ${url} -> ${status} ${code}`;
 
-    if (status >= 500) this.logger.error(logLine, (exception as any)?.stack);
+    if (status >= HttpStatus.INTERNAL_SERVER_ERROR)
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      this.logger.error(logLine, (exception as any)?.stack);
     else this.logger.warn(logLine);
 
     res.status(status).json({

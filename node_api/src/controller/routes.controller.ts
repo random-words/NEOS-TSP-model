@@ -1,16 +1,7 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { RoutesControllerMap } from './controllers.map';
 import { RoutesService } from 'src/service/routes.service';
-import { WINE_TYPES } from 'src/shared/types/business.types';
-interface OptimizeRouteParams {
-  budgetPerPerson: number;
-  peopleCount: number;
-  locationCount: number;
-  startPointId: string;
-  timeLimit: number;
-  timePerLocation: number;
-  winePreferences: WINE_TYPES[];
-}
+
 @Controller(RoutesControllerMap.name)
 export class RoutesController {
   constructor(private readonly routeService: RoutesService) {}
@@ -20,7 +11,7 @@ export class RoutesController {
   }
 
   @Post(RoutesControllerMap.OPTIMIZE)
-  async optimizeRoute(@Body() dto: OptimizeRouteParams) {
+  async optimizeRoute(@Body() dto) {
     return await this.routeService.optimizeRoute(dto);
   }
 

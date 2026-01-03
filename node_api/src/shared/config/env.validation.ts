@@ -1,10 +1,10 @@
 import { plainToClass, Type } from 'class-transformer';
 import { IsEnum, IsInt, IsString, Min, validateSync } from 'class-validator';
-import { Environment, EnvironmentVariables } from '../types/env.types';
+import * as envTypes from '../types/env.types';
 
-class EnvVariables implements EnvironmentVariables {
-  @IsEnum(Environment)
-  NODE_ENV: Environment;
+class EnvVariables implements envTypes.EnvironmentVariables {
+  @IsEnum(envTypes.ENVIRONMENTS)
+  NODE_ENV: envTypes.Environment;
 
   @Type(() => Number)
   @IsInt()
