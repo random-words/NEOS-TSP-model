@@ -1,18 +1,21 @@
 import { createZodDto } from 'nestjs-zod';
 import {
   CreateLocationRequestSchema,
-  UpdateLocationRequestSchema,
   GetAllLocationsQuerySchema,
   GetLocationByIdParamsSchema,
+  DeleteLocationParamsSchema,
 } from 'node-api-contracts';
 
 export class CreateLocationDto extends createZodDto(
   CreateLocationRequestSchema,
 ) {}
-export class UpdateLocationDto extends createZodDto(
-  UpdateLocationRequestSchema,
-) {}
 export class GetAllLocationsQueryDto extends createZodDto(
   GetAllLocationsQuerySchema,
 ) {}
-export class IdParamDto extends createZodDto(GetLocationByIdParamsSchema) {}
+
+export class LocationIdParamDto extends createZodDto(
+  GetLocationByIdParamsSchema,
+) {}
+export class DeleteLocationParamDto extends createZodDto(
+  DeleteLocationParamsSchema,
+) {}

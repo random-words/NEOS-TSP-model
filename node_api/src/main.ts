@@ -5,7 +5,7 @@ import type { Connection } from 'mongoose';
 
 import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './shared/filters/all-exceptions.filter';
-import { HttpLoggingInterceptor } from './shared/interceptors/req-logging.interceptor';
+import { HttpLoggingInterceptor } from './shared/interceptors/http-logging.interceptor';
 import { ZodValidationPipe } from 'nestjs-zod';
 
 async function bootstrap() {

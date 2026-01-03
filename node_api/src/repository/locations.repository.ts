@@ -1,27 +1,41 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Location } from 'src/entity/Location.entity';
+import type {
+  CreateLocationRequest,
+  GetAllLocationsQuery,
+  ObjectIdString,
+} from 'node-api-contracts';
+import { Location, LocationDocument } from 'src/entity/Location.entity';
 
 @Injectable()
 export class LocationsRepository {
-  rootModel: Model<Location>;
   constructor(
-    @InjectModel(Location.name) private readonly locationModel: Model<Location>,
-  ) {
-    this.rootModel = locationModel;
+    @InjectModel(Location.name)
+    private readonly locationModel: Model<LocationDocument>,
+  ) {}
+
+  async findAll(q: GetAllLocationsQuery) {
+    const skip = (q.page - 1) * q.limit;
+
+    const [items, total] = await Promise.all([
+      this.locationModel.find().skip(skip).limit(q.limit).lean(),
+      this.locationModel.countDocuments(),
+    ]);
+
+    return { items, total };
   }
 
-  async findAll(): Promise<Location[]> {
-    return this.locationModel.find().exec();
+  async findById(id: ObjectIdString) {
+    return this.locationModel.findById(id).lean();
   }
 
-  async findById(_id: string): Promise<Location | null> {
-    return this.locationModel.findById(_id).exec();
+  async create(data: CreateLocationRequest) {
+    const doc = await this.locationModel.create(data);
+    return doc.toObject();
   }
 
-  async create(data: Partial<Location>): Promise<Location> {
-    const createdLocation = new this.locationModel(data);
-    return createdLocation.save();
+  async deleteById(id: ObjectIdString) {
+    return this.locationModel.findByIdAndDelete(id).lean();
   }
 }
