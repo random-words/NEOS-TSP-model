@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import type {
   CreateLocationRequest,
   GetAllLocationsQuery,
@@ -37,5 +37,9 @@ export class LocationsRepository {
 
   async deleteById(id: ObjectIdString) {
     return this.locationModel.findByIdAndDelete(id).lean();
+  }
+
+  findByIds(ids: Array<ObjectIdString | Types.ObjectId>) {
+    return this.locationModel.find({ _id: { $in: ids } }).lean();
   }
 }

@@ -15,11 +15,11 @@ export class LocationsService {
   }
 
   async getLocationById(id: ObjectIdString) {
-    return this.locationsRepository.rootModel.findById(id);
+    return this.locationsRepository.findById(id);
   }
 
   async createLocation(data: CreateLocationRequest) {
-    return this.locationsRepository.rootModel.create(data);
+    return this.locationsRepository.create(data);
   }
 
   async deleteLocation(id: ObjectIdString) {
