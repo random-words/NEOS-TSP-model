@@ -3,7 +3,7 @@ from pathlib import Path
 
 from pyomo.environ import value
 
-from math_models.tsp_runner import KCycleTSPRunner
+from engine_api.math_service.math_model.tsp_runner import KCycleTSPRunner
 
 
 class KCycleTSPService:
