@@ -1,7 +1,15 @@
-import { Injectable } from '@nestjs/common';
-import { ObjectId } from 'mongoose';
-import { LocationsRepository } from 'src/repository/locations.repository';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import type {
+  CreateRouteRequest,
+  UpdateRouteRequest,
+  OptimizeRouteRequest,
+  GetAllRoutesQuery,
+  ObjectIdString,
+} from 'node-api-contracts';
+import { ROUTE_ANCHORS_CONST } from 'node-api-contracts';
+
 import { RoutesRepository } from 'src/repository/routes.repository';
+import { LocationsRepository } from 'src/repository/locations.repository';
 
 @Injectable()
 export class RoutesService {
@@ -10,35 +18,83 @@ export class RoutesService {
     private readonly locationsRepository: LocationsRepository,
   ) {}
 
-  async optimizeRoute(dto) {
-    const openStreetMapUrl = `https://router.project-osrm.org/route/v1/driving/LNG,LAT;LNG,LAT?overview=full&geometries=geojson`;
+  async createRoute(dto: CreateRouteRequest) {
+    // MVP: якщо клієнт не передав totals — ставимо 0
+    const created = await this.routesRepository.create({
+      ...dto,
+      totalDistance: dto.totalDistance ?? 0,
+      totalTime: dto.totalTime ?? 0,
+      visitOrder: [],
+    });
 
-    // STEPS
-    // Aggregate all locations
-    const aggregatedLocations = await this.locationsRepository.rootModel.find(
-      {},
+    return { ok: true, data: created };
+  }
+
+  async getAllRoutes(q: GetAllRoutesQuery) {
+    const { items, total } = await this.routesRepository.findAll(q);
+
+    return {
+      ok: true,
+      data: {
+        items,
+        meta: {
+          page: q.page,
+          limit: q.limit,
+          total,
+          hasNext: q.page * q.limit < total,
+        },
+      },
+    };
+  }
+
+  async getRouteById(id: ObjectIdString) {
+    const route = await this.routesRepository.findById(id);
+    if (!route) throw new NotFoundException('Route not found');
+    return { ok: true, data: route };
+  }
+
+  async updateRoute(id: ObjectIdString, dto: UpdateRouteRequest) {
+    const updated = await this.routesRepository.updateById(id, dto);
+    if (!updated) throw new NotFoundException('Route not found');
+    return { ok: true, data: updated };
+  }
+
+  async deleteRoute(id: ObjectIdString) {
+    const deleted = await this.routesRepository.deleteById(id);
+    if (!deleted) throw new NotFoundException('Route not found');
+    return { ok: true, data: { deleted: true } };
+  }
+
+  async optimizeRoute(routeId: ObjectIdString, dto: OptimizeRouteRequest) {
+    // MVP: поки що тільки валідуємо anchorId, без реального OSRM/матриць
+    if (dto.anchorId) {
+      const exists = ROUTE_ANCHORS_CONST.some(a => a.id === dto.anchorId);
+      if (!exists) throw new NotFoundException('Anchor not found');
+    }
+
+    const route = await this.routesRepository.findById(routeId);
+    if (!route) throw new NotFoundException('Route not found');
+
+    // Заготовка: зібрати потрібні локації
+    // (Якщо хочеш оптимізувати саме locationsMap, достатньо витягнути їх)
+    const locations = await this.locationsRepository.findByIds(
+      route.locationsMap,
     );
 
-    // Use specific flow for optimum mode
-    // Google APIs
-    // Create matrix
-    // Send to EngineAPI
-    // Create osrp link
-
-    return;
+    // TODO (пізніше): OSRM matrix/route + engine API
+    // Зараз: повертаємо як є
+    return {
+      ok: true,
+      data: route,
+      debug: {
+        mode: dto.mode,
+        anchorId: dto.anchorId ?? null,
+        locationsCount: locations.length,
+      },
+    };
   }
 
-  async createRoute() {
-    const route = await this.routesRepository.rootModel.create({
-      name: 'Some Name',
-    });
-    return route;
-  }
-
-  async getRouteById(id: ObjectId) {
-    const route = await this.routesRepository.rootModel.findById(id);
-    console.log(route);
-
-    return { route };
+  async getRouteAnchors() {
+    return { ok: true, data: ROUTE_ANCHORS_CONST };
   }
 }

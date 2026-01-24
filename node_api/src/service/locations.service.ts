@@ -1,27 +1,28 @@
 import { Injectable } from '@nestjs/common';
-import { ObjectId } from 'mongoose';
+import { LocationsRepository } from 'src/repository/locations.repository';
+import type {
+  CreateLocationRequest,
+  GetAllLocationsQuery,
+  ObjectIdString,
+} from 'node-api-contracts';
 
 @Injectable()
 export class LocationsService {
-  constructor() {}
+  constructor(private readonly locationsRepository: LocationsRepository) {}
 
-  async getAllLocations() {
-    // await new Promise(() => console.log('Fetching all locations'));
-    return [
-      { id: 1, name: 'Location A' },
-      { id: 2, name: 'Location B' },
-    ];
+  async getAllLocations(query: GetAllLocationsQuery) {
+    return this.locationsRepository.findAll(query);
   }
 
-  async getLocationById({ _id }: { _id: ObjectId }) {
-    return;
+  async getLocationById(id: ObjectIdString) {
+    return this.locationsRepository.findById(id);
   }
 
-  async createLocation(data) {
-    return;
+  async createLocation(data: CreateLocationRequest) {
+    return this.locationsRepository.create(data);
   }
 
-  async deleteLocation(_id: ObjectId) {
-    return;
+  async deleteLocation(id: ObjectIdString) {
+    return this.locationsRepository.deleteById(id);
   }
 }

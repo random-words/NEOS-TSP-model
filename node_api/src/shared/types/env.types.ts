@@ -1,7 +1,6 @@
-export enum Environment {
-  DEVELOPMENT = 'development',
-  PRODUCTION = 'production',
-}
+export const ENVIRONMENTS = ['development', 'production'] as const;
+export type Environment = (typeof ENVIRONMENTS)[number];
+
 export interface EnvironmentVariables {
   NODE_ENV: Environment;
   PORT: number;

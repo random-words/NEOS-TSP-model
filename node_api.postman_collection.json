@@ -1,0 +1,232 @@
+{
+  "info": {
+    "_postman_id": "9a2c9a7e-7e2a-4a3b-9c2d-3b1f4b6a9a01",
+    "name": "node_api - Locations & Routes",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:9999/api" },
+    { "key": "locationId1", "value": "" },
+    { "key": "locationId2", "value": "" },
+    { "key": "routeId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Locations",
+      "item": [
+        {
+          "name": "Create Location A (sets locationId1)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('status 2xx', function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "const json = pm.response.json();",
+                  "pm.test('ok=true', () => pm.expect(json.ok).to.eql(true));",
+                  "if (json?.data?.id) pm.collectionVariables.set('locationId1', json.data.id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Location A\",\n  \"description\": \"Test location A\",\n  \"location\": { \"type\": \"Point\", \"coordinates\": [22.2895, 48.6217] },\n  \"address\": \"Uzhhorod, Test street 1\",\n  \"priceLevel\": 2,\n  \"imagesLinks\": [\"https://example.com/a.jpg\"],\n  \"avgStayMinutes\": 60,\n  \"avgTastingPricePerPerson\": 15,\n  \"avgMealPricePerPerson\": 25,\n  \"avgBottlePrice\": 18,\n  \"siteUrl\": \"https://example.com\",\n  \"contactNumber\": \"+380000000000\",\n  \"wineTags\": [\"RED\", \"WHITE\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/locations",
+              "host": ["{{baseUrl}}"],
+              "path": ["locations"]
+            }
+          }
+        },
+        {
+          "name": "Create Location B (sets locationId2)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('status 2xx', function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "const json = pm.response.json();",
+                  "pm.test('ok=true', () => pm.expect(json.ok).to.eql(true));",
+                  "if (json?.data?.id) pm.collectionVariables.set('locationId2', json.data.id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Location B\",\n  \"description\": \"Test location B\",\n  \"location\": { \"type\": \"Point\", \"coordinates\": [22.3000, 48.6300] },\n  \"address\": \"Uzhhorod, Test street 2\",\n  \"priceLevel\": 3,\n  \"imagesLinks\": [\"https://example.com/b.jpg\"],\n  \"avgStayMinutes\": 45,\n  \"avgTastingPricePerPerson\": 20,\n  \"avgMealPricePerPerson\": 30,\n  \"avgBottlePrice\": 22,\n  \"siteUrl\": \"https://example.com\",\n  \"contactNumber\": \"+380000000001\",\n  \"wineTags\": [\"SPARKLING\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/locations",
+              "host": ["{{baseUrl}}"],
+              "path": ["locations"]
+            }
+          }
+        },
+        {
+          "name": "Get All Locations (paginated)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/locations?page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["locations"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Location By Id (locationId1)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/locations/{{locationId1}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["locations", "{{locationId1}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Location (locationId1)",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/locations/{{locationId1}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["locations", "{{locationId1}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Routes",
+      "item": [
+        {
+          "name": "Get Route Anchors",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/routes/anchors",
+              "host": ["{{baseUrl}}"],
+              "path": ["routes", "anchors"]
+            }
+          }
+        },
+        {
+          "name": "Create Route (sets routeId)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('status 2xx', function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "const json = pm.response.json();",
+                  "pm.test('ok=true', () => pm.expect(json.ok).to.eql(true));",
+                  "if (json?.data?.id) pm.collectionVariables.set('routeId', json.data.id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test Route\",\n  \"locationsMap\": [\"{{locationId1}}\", \"{{locationId2}}\"],\n  \"stopsCount\": 2\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/routes",
+              "host": ["{{baseUrl}}"],
+              "path": ["routes"]
+            }
+          }
+        },
+        {
+          "name": "Get All Routes (paginated)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/routes?page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["routes"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Route By Id (routeId)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/routes/{{routeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["routes", "{{routeId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Route (PATCH routeId)",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test Route (updated)\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/routes/{{routeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["routes", "{{routeId}}"]
+            }
+          }
+        },
+        {
+          "name": "Optimize Route (POST :id/optimize)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mode\": \"TIME\",\n  \"anchorId\": \"uzhhorod\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/routes/{{routeId}}/optimize",
+              "host": ["{{baseUrl}}"],
+              "path": ["routes", "{{routeId}}", "optimize"]
+            }
+          }
+        },
+        {
+          "name": "Delete Route (routeId)",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/routes/{{routeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["routes", "{{routeId}}"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
