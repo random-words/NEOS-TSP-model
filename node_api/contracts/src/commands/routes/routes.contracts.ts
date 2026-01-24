@@ -93,7 +93,24 @@ export const GetAnchorsResponseSchema = ApiResponseSchema(
 export type GetAnchorsResponse = z.infer<typeof GetAnchorsResponseSchema>;
 
 // Optimize (мінімальний контракт, без бізнес-полів)
-export const OptimizeRouteParamsSchema = z.object({ id: ObjectIdSchema });
+export const OptimizeRouteParamsSchema = z.object({
+  id: ObjectIdSchema,
+
+  /** Maximum spending per person (UAH). */
+  budgetPerPerson: z.number(),
+  /** Number of travellers in the group. */
+  peopleCount: z.number(),
+  /** How many locations to include in the route (including start). */
+  locationCount: z.number(),
+  /** Identifier of the starting location (MongoDB ObjectId). */
+  startPointId: ObjectIdSchema,
+  /** Maximum tour duration in minutes (including travel and stay). */
+  timeLimit: z.number(),
+  /** Average time spent at each location in minutes. */
+  timePerLocation: z.number(),
+  /** Preferred wine types used to filter locations. */
+  winePreferences: z.array(z.string()),
+});
 export type OptimizeRouteParams = z.infer<typeof OptimizeRouteParamsSchema>;
 
 export const OptimizeRouteRequestSchema = z.object({

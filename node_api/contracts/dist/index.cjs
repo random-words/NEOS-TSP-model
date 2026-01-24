@@ -230,7 +230,23 @@ var GetAnchorsResponseSchema = ApiResponseSchema(
     })
   )
 );
-var OptimizeRouteParamsSchema = import_zod4.z.object({ id: ObjectIdSchema });
+var OptimizeRouteParamsSchema = import_zod4.z.object({
+  id: ObjectIdSchema,
+  /** Maximum spending per person (UAH). */
+  budgetPerPerson: import_zod4.z.number(),
+  /** Number of travellers in the group. */
+  peopleCount: import_zod4.z.number(),
+  /** How many locations to include in the route (including start). */
+  locationCount: import_zod4.z.number(),
+  /** Identifier of the starting location (MongoDB ObjectId). */
+  startPointId: ObjectIdSchema,
+  /** Maximum tour duration in minutes (including travel and stay). */
+  timeLimit: import_zod4.z.number(),
+  /** Average time spent at each location in minutes. */
+  timePerLocation: import_zod4.z.number(),
+  /** Preferred wine types used to filter locations. */
+  winePreferences: import_zod4.z.array(import_zod4.z.string())
+});
 var OptimizeRouteRequestSchema = import_zod4.z.object({
   mode: import_zod4.z.enum(OPTIMIZATION_MODES),
   anchorId: import_zod4.z.string().optional()

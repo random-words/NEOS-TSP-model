@@ -59,7 +59,7 @@ export class RoutesController {
     @Param() params: OptimizeRouteParamDto,
     @Body() dto: OptimizeRouteDto,
   ) {
-    return await this.routeService.optimizeRoute(params.id, dto);
+    return await this.routeService.optimizeRoute(dto);
   }
 
   @Get(RoutesControllerMap.GET_ANCHORS)

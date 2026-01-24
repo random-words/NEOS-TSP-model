@@ -538,6 +538,13 @@ declare const GetAnchorsResponseSchema: z.ZodObject<{
 type GetAnchorsResponse = z.infer<typeof GetAnchorsResponseSchema>;
 declare const OptimizeRouteParamsSchema: z.ZodObject<{
     id: z.ZodString;
+    budgetPerPerson: z.ZodNumber;
+    peopleCount: z.ZodNumber;
+    locationCount: z.ZodNumber;
+    startPointId: z.ZodString;
+    timeLimit: z.ZodNumber;
+    timePerLocation: z.ZodNumber;
+    winePreferences: z.ZodArray<z.ZodString>;
 }, z.core.$strip>;
 type OptimizeRouteParams = z.infer<typeof OptimizeRouteParamsSchema>;
 declare const OptimizeRouteRequestSchema: z.ZodObject<{
