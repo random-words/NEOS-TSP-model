@@ -3,9 +3,10 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/.venv" />
-      <excludeFolder url="file://$MODULE_DIR$/models" />
+      <excludeFolder url="file://$MODULE_DIR$/.project-interpreter" />
+      <excludeFolder url="file://$MODULE_DIR$/math_models/models" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.14 (NEOS_TSP_model)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.11 (NEOS_TSP_model)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
