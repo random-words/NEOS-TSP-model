@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 from pyomo.environ import Constraint, Objective, minimize, value
+from pyomo.opt import TerminationCondition
 
 from engine_api.math_service.math_model.tsp_helpers import (
     load_geo_dataframe, load_tsplib_data,
@@ -262,6 +263,43 @@ class KCycleTSPRunner:
         os.environ["NEOS_EMAIL"] = NEOS_EMAIL
 
         results, ok = solve_on_neos(self.model, optimizer=SOLVER, neos_email=os.environ["NEOS_EMAIL"], tee=tee)
+
+        term_condition = results.solver.termination_condition
+        if term_condition == TerminationCondition.infeasible:
+            print(f"⚠️  SOLVER STATUS: {term_condition}")
+            print("🚨  Problem is INFEASIBLE. Constraints cannot be satisfied.")
+
+            self.ok = False
+            self.results = results
+            return results, False
+
+        if ok:
+            try:
+                self.model.solutions.load_from(results)
+            except Exception as e:
+                print(f"Standard load failed (ignoring): {e}")
+                pass
+
+            if hasattr(self.model, 'x'):
+                for v in self.model.x.values():
+                    if v.value is None:
+                        v.set_value(0)
+
+            if hasattr(self.model, 'y'):
+                for v in self.model.y.values():
+                    if v.value is None:
+                        v.set_value(0)
+
+            if hasattr(self.model, 'u'):
+                for v in self.model.u.values():
+                    if v.value is None:
+                        v.set_value(0)
+
+            if hasattr(self.model, 'z'):
+                for v in self.model.z.values():
+                    if v.value is None:
+                        v.set_value(0)
+
         self.results = results
         self.ok = ok
 
