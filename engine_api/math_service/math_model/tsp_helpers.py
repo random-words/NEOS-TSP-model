@@ -260,7 +260,7 @@ def solve_on_neos(model, optimizer="cplex", neos_email=None, tee=False):
         os.environ["NEOS_EMAIL"] = neos_email
 
     neos = SolverManagerFactory("neos")
-    results = neos.solve(model, opt=optimizer, tee=tee)
+    results = neos.solve(model, opt=optimizer, tee=tee, format='nl')
 
     ok = (
         results.solver.status == SolverStatus.ok

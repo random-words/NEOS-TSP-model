@@ -17,7 +17,12 @@ def create_tsp_model(nodes, s, k, xcoord_data, ycoord_data, d_data):
       - hybrid: всі разом
     """
     nodes = list(nodes)
-    s_val = int(s)
+    if nodes and isinstance(nodes[0], str):
+        s_val = str(s)
+    else:
+        s_val = int(s)
+
+    # s_val = int(s)
 
     if s_val not in nodes:
         raise ValueError(f"Start node s={s_val} is not in nodes list.")
@@ -35,7 +40,7 @@ def create_tsp_model(nodes, s, k, xcoord_data, ycoord_data, d_data):
 
     # --- Params ---
     m.s = Param(initialize=s_val)
-    m.k = Param(initialize=int(k), within=PositiveIntegers)
+    m.k = Param(initialize=int(k), within=PositiveIntegers, mutable=True)
 
     m.x_coord = Param(m.NODES, initialize=lambda m_, i: float(xcoord_data[i]))
     m.y_coord = Param(m.NODES, initialize=lambda m_, i: float(ycoord_data[i]))

@@ -12,7 +12,7 @@ NEOS_EMAIL = "antonsivko480@gmail.com"
 # CONFIG: TSP / k-cycle
 # ----------------------------
 s_value = 1
-k_value = 5
+k_value = 3
 
 # ----------------------------
 # CONFIG: travel/time/budget parameters
