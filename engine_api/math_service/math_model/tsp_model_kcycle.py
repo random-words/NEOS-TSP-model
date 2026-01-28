@@ -1,33 +1,23 @@
 from pyomo.environ import *
 
+from pyomo.environ import *
+
 
 def create_tsp_model(nodes, s, k, xcoord_data, ycoord_data, d_data):
-    """
-    k-cycle модель (всі блоки присутні: base + flow + MTZ).
-    NODES = реальні node ids (Set), а не RangeSet.
-
-    Базові (загальні) обмеження для всіх постановок:
-      - con2 (вихід)
-      - con3 (вхід)
-      - con4 (рівно k вершин крім s)
-
-    Зв'язність:
-      - flow: con5, con6_1, con6_2, con7
-      - MTZ : con15
-      - hybrid: всі разом
-    """
     nodes = list(nodes)
+
+    # Приводимо до типів безпечно
     if nodes and isinstance(nodes[0], str):
         s_val = str(s)
     else:
         s_val = int(s)
 
-    # s_val = int(s)
+    k_val = int(k)  # "Запікаємо" значення як звичайне число
 
     if s_val not in nodes:
         raise ValueError(f"Start node s={s_val} is not in nodes list.")
-    if int(k) > (len(nodes) - 1):
-        raise ValueError(f"k={k} must be <= |nodes|-1 = {len(nodes)-1}")
+    if k_val > (len(nodes) - 1):
+        raise ValueError(f"k={k} must be <= |nodes|-1 = {len(nodes) - 1}")
 
     m = ConcreteModel()
 
@@ -36,11 +26,17 @@ def create_tsp_model(nodes, s, k, xcoord_data, ycoord_data, d_data):
 
     def arcs_init(m_):
         return [(i, j) for i in m_.NODES for j in m_.NODES if i != j]
+
     m.ARCS = Set(dimen=2, initialize=arcs_init)
 
-    # --- Params ---
-    m.s = Param(initialize=s_val)
-    m.k = Param(initialize=int(k), within=PositiveIntegers, mutable=True)
+    # --- Params (Тільки дані, не конфігурація) ---
+    # s і k більше НЕ є Param об'єктами Pyomo, це просто змінні Python
+    # m.s = Param(...) -> ВИДАЛЕНО
+    # m.k = Param(...) -> ВИДАЛЕНО
+
+    # Зберігаємо s_val в об'єкті моделі просто як атрибут (для зручності доступу ззовні)
+    m.s_val_attr = s_val
+    m.k_val_attr = k_val
 
     m.x_coord = Param(m.NODES, initialize=lambda m_, i: float(xcoord_data[i]))
     m.y_coord = Param(m.NODES, initialize=lambda m_, i: float(ycoord_data[i]))
@@ -55,33 +51,41 @@ def create_tsp_model(nodes, s, k, xcoord_data, ycoord_data, d_data):
     m.x = Var(m.ARCS, domain=Binary)
     m.y = Var(m.NODES, domain=Binary)
     m.z = Var(m.ARCS, domain=NonNegativeReals)
-    m.u = Var(m.NODES, domain=Integers, bounds=lambda m_, i: (1, m_.k))
+    # Bounds теж використовують звичайне число k_val
+    m.u = Var(m.NODES, domain=Integers, bounds=(1, k_val))
 
-    # y[s] не використовується у con2/con3, тому фіксуємо (важливо для budget/time)
+    # --- Constraints ---
+
+    # Фіксуємо старт (hardcoded s_val)
     m.con_y_start = Constraint(expr=m.y[s_val] == 0)
 
-    # --- Default Objective: distance ---
+    # Objective
     m.dk_min = Objective(
         expr=sum(m.d[i, j] * m.x[i, j] for (i, j) in m.ARCS),
         sense=minimize
     )
 
-    # --- Base constraints: con2, con3, con4 ---
+    # Base constraints
     def con2_rule(m_, i):
         outdeg = sum(m_.x[i, j] for j in m_.NODES if (i, j) in m_.ARCS)
+        # Використовуємо s_val напряму
         return outdeg == (1 if i == s_val else m_.y[i])
+
     m.con2 = Constraint(m.NODES, rule=con2_rule)
 
     def con3_rule(m_, i):
         indeg = sum(m_.x[j, i] for j in m_.NODES if (j, i) in m_.ARCS)
         return indeg == (1 if i == s_val else m_.y[i])
+
     m.con3 = Constraint(m.NODES, rule=con3_rule)
 
-    m.con4 = Constraint(expr=sum(m.y[i] for i in m.NODES if i != s_val) == m.k)
+    # con4: sum(y) == k (ВИКОРИСТОВУЄМО число k_val)
+    m.con4 = Constraint(expr=sum(m.y[i] for i in m.NODES if i != s_val) == k_val)
 
-    # --- Flow constraints (con5 - con7) ---
-    m.con5 = Constraint(m.ARCS, rule=lambda m_, i, j: m_.z[i, j] - m_.k * m_.x[i, j] <= 0)
-    m.con6_1 = Constraint(expr=sum(m.z[s_val, j] for j in m.NODES if (s_val, j) in m.ARCS) == m.k)
+    # --- Flow constraints ---
+    # Всюди замінили m.k на k_val
+    m.con5 = Constraint(m.ARCS, rule=lambda m_, i, j: m_.z[i, j] - k_val * m_.x[i, j] <= 0)
+    m.con6_1 = Constraint(expr=sum(m.z[s_val, j] for j in m.NODES if (s_val, j) in m.ARCS) == k_val)
     m.con6_2 = Constraint(expr=sum(m.z[j, s_val] for j in m.NODES if (j, s_val) in m.ARCS) == 0)
 
     def con7_rule(m_, i):
@@ -90,13 +94,16 @@ def create_tsp_model(nodes, s, k, xcoord_data, ycoord_data, d_data):
         outgoing = sum(m_.z[i, j] for j in m_.NODES if (i, j) in m_.ARCS)
         incoming = sum(m_.z[j, i] for j in m_.NODES if (j, i) in m_.ARCS)
         return outgoing - incoming == -m_.y[i]
+
     m.con7 = Constraint(m.NODES, rule=con7_rule)
 
-    # --- MTZ (con15) ---
+    # --- MTZ ---
     def con15_rule(m_, i, j):
         if i == s_val or j == s_val:
             return Constraint.Skip
-        return m_.u[i] - m_.u[j] + m_.k * m_.x[i, j] <= m_.k - 1
+        # Тут теж k_val
+        return m_.u[i] - m_.u[j] + k_val * m_.x[i, j] <= k_val - 1
+
     m.con15 = Constraint(m.ARCS, rule=con15_rule)
 
     return m
@@ -143,7 +150,8 @@ def attach_budget(m, cost_per_person, group_size=1):
     total_budget = group_size * sum_{i != s} cost[i] * y[i]
     cost_per_person: dict {node: cost} (на 1 людину)
     """
-    s_val = value(m.s)
+    # s_val = value(m.s)
+    s_val = m.s_val_attr
 
     m.group_size = Param(initialize=int(group_size), mutable=True, within=PositiveIntegers)
 
@@ -166,7 +174,8 @@ def attach_time(m, stay_minutes, speed_kmph=40.0):
     total_time = travel_time + sum_{i != s} stay[i] * y[i]
     stay_minutes: dict {node: minutes}
     """
-    s_val = value(m.s)
+    # s_val = value(m.s)
+    s_val = m.s_val_attr
     speed = float(speed_kmph)
 
     m.stay_min = Param(
