@@ -1,0 +1,46 @@
+{
+  "id": {"type": "String"},
+  "numberOfNodes": {"type": "Integer"},
+  "nodes": {
+    "type": [],
+    "values": {
+      "type": {},
+      "values": {
+        "id"                      : {"type": "Integer"},
+        "name"                    : {"type": "String" },
+        "lat"                     : {"type": "Float"  },
+        "lon"                     : {"type": "Float"  },
+        "openingHours"            : {"type": "String" },
+        "avgStayMinutes"          : {"type": "Float"  },
+        "priceLevel"              : {"type": "Float"  },
+        "avgTastingPricePerPerson": {"type": "Float"  },
+        "avgMealPricePerPerson"   : {"type": "Float"  },
+        "avgBottlePrice"          : {"type": "Float"  }
+      }
+    },
+    "default": []
+  },
+  "startNode": {
+    "type": {},
+    "values": {
+      "id"                      : {"type": "Integer"},
+      "name"                    : {"type": "String" },
+      "lat"                     : {"type": "Float"  },
+      "lon"                     : {"type": "Float"  },
+      "openingHours"            : {"type": "String" },
+      "avgStayMinutes"          : {"type": "Float"  },
+      "priceLevel"              : {"type": "Float"  },
+      "avgTastingPricePerPerson": {"type": "Float"  },
+      "avgMealPricePerPerson"   : {"type": "Float"  },
+      "avgBottlePrice"          : {"type": "Float"  }
+    },
+    "default": {}
+  },
+  "groupSize": {"type": "Integer"},
+  "budgetMax": {"type": "Integer"},
+  "timeMax": {"type": "Integer"},
+  "distanceMax": {"type": "Integer", "default": null},
+  "costScenario": {"type": "String"},
+  "reqCode": {"type": "Integer"},
+  "reqMessage": {"type": "String"}
+}
