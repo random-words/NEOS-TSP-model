@@ -1,7 +1,7 @@
 {
   "id": {"type": "String"},
   "numberOfNodes": {"type": "Integer"},
-  "nodes": {
+  "allNodes": {
     "type": [],
     "values": {
       "type": {},
@@ -41,6 +41,5 @@
   "timeMax": {"type": "Integer"},
   "distanceMax": {"type": "Integer", "default": null},
   "costScenario": {"type": "String"},
-  "reqCode": {"type": "Integer"},
-  "reqMessage": {"type": "String"}
+  "objectiveFunction": {"type": "String"}
 }
