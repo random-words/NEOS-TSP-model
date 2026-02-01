@@ -6,7 +6,7 @@
       <excludeFolder url="file://$MODULE_DIR$/.project-interpreter" />
       <excludeFolder url="file://$MODULE_DIR$/engine_api/math_service/models" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.13 (NEOS-TSP-model)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.14 (NEOS_TSP_model)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

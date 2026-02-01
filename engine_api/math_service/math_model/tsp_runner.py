@@ -89,7 +89,6 @@ class KCycleTSPRunner:
         DATA_SOURCE,
         EXCEL_PATH,
         TSPLIB_PATH,
-        COST_SCENARIO,
         s_value,
         k_value
     ):
@@ -113,12 +112,7 @@ class KCycleTSPRunner:
             # 2) check_min/check_max + cost per person
             df = self.add_check_ranges(df)
 
-            if COST_SCENARIO == "min":
-                df["cost_pp"] = df["check_min"]
-            elif COST_SCENARIO == "avg":
-                df["cost_pp"] = (df["check_min"] + df["check_max"]) / 2.0
-            else:
-                df["cost_pp"] = df["check_max"]
+            df["cost_pp"] = df["check_max"]
 
             df["cost_pp"] = pd.to_numeric(df["cost_pp"], errors="coerce").fillna(0.0)
             cost_per_person = dict(zip(df["id"], df["cost_pp"]))
@@ -167,7 +161,7 @@ class KCycleTSPRunner:
     # ----------------------------
     # MODEL BUILD
     # ----------------------------
-    def build_model(self, CONNECTIVITY, group_size, speed_kmph):
+    def build_model(self, CONNECTIVITY, group_size, speed_kmph, route_pace):
         nodes = self.nodes
         xcoord_data = self.xcoord_data
         ycoord_data = self.ycoord_data
@@ -192,7 +186,7 @@ class KCycleTSPRunner:
         # expressions for constraints / reporting
         attach_total_distance(model)
         attach_budget(model, self.cost_per_person, group_size=group_size)
-        attach_time(model, self.stay_minutes, speed_kmph=speed_kmph)
+        attach_time(model, route_pace=route_pace, speed_kmph=speed_kmph)
 
         self.d_data = d_data
         self.model = model

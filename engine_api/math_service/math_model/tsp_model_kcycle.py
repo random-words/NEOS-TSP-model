@@ -168,28 +168,28 @@ def attach_budget(m, cost_per_person, group_size=1):
     return m.total_budget
 
 
-def attach_time(m, stay_minutes, speed_kmph=40.0):
+def attach_time(m, route_pace, speed_kmph=40.0):
     """
-    travel_time (minutes) = sum_{(i,j)} 60 * d[i,j]/speed * x[i,j]
-    total_time = travel_time + sum_{i != s} stay[i] * y[i]
-    stay_minutes: dict {node: minutes}
+    Stay Time = (кількість активних точок) * route_pace
+    Оскільки ми маємо обмеження con4 (сума y = k), то сумарний час зупинок
+    буде рівно k * route_pace.
+
+    Але ми прив'язуємо це до змінних y[i], щоб солвер "відчував" вагу кожної точки.
     """
-    # s_val = value(m.s)
     s_val = m.s_val_attr
     speed = float(speed_kmph)
 
-    m.stay_min = Param(
-        m.NODES,
-        initialize=lambda m_, i: float(stay_minutes.get(i, 0.0)),
-        within=NonNegativeReals,
-        mutable=True
-    )
+    m.route_pace = Param(initialize=float(route_pace), mutable=True, within=NonNegativeReals)
 
     m.travel_time = Expression(
         expr=sum((60.0 * m.d[i, j] / speed) * m.x[i, j] for (i, j) in m.ARCS)
     )
 
+    m.stay_time = Expression(
+        expr=sum(m.route_pace * m.y[i] for i in m.NODES if i != s_val)
+    )
+
     m.total_time = Expression(
-        expr=m.travel_time + sum(m.stay_min[i] * m.y[i] for i in m.NODES if i != s_val)
+        expr=m.travel_time + m.stay_time
     )
     return m.total_time

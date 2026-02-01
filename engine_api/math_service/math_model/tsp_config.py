@@ -20,10 +20,10 @@ k_value = 8
 group_size = 2
 speed_kmph = 50.0
 budget_max = 100000
-time_max   = 100 * 60.0
+time_max   = 24 * 360.0 # In Hours
 dist_max = None # If Needed
+route_pace = 90
 
-COST_SCENARIO = "max"   # "min" | "avg" | "max"
 CONNECTIVITY = "hybrid" # "flow" | "mtz" | "hybrid"
 
 SOLVER = "cplex"        # NEOS solver name

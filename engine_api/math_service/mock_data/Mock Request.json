@@ -1,5 +1,4 @@
 {
-  "id": "1",
   "numberOfNodes": 5,
   "allNodes": [
     {
@@ -127,18 +126,12 @@
     "id": 1,
     "name": "Середнянський замок",
     "lat": 48.5389965,
-    "lon": 22.4974842,
-    "openingHours": "always_open",
-    "avgStayMinutes": 90.0,
-    "priceLevel": 475.0,
-    "avgTastingPricePerPerson": 250.0,
-    "avgMealPricePerPerson": 300.0,
-    "avgBottlePrice": 200.0
+    "lon": 22.4974842
   },
   "groupSize": 2,
   "budgetMax": 35000,
-  "timeMax": 14400,
+  "timeMax": 900,
   "distanceMax": null,
-  "costScenario": "Average",
+  "routePace": 90,
   "objectiveFunction": "Distance"
 }
