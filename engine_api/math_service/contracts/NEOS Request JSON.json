@@ -1,12 +1,11 @@
 {
-  "id": {"type": "String"},
   "numberOfNodes": {"type": "Integer"},
   "allNodes": {
     "type": [],
     "values": {
       "type": {},
       "values": {
-        "id"                      : {"type": "Integer"},
+        "id"                      : {"type": "String"},
         "name"                    : {"type": "String" },
         "lat"                     : {"type": "Float"  },
         "lon"                     : {"type": "Float"  },
@@ -23,16 +22,10 @@
   "startNode": {
     "type": {},
     "values": {
-      "id"                      : {"type": "Integer"},
+      "id"                      : {"type": "String"},
       "name"                    : {"type": "String" },
       "lat"                     : {"type": "Float"  },
-      "lon"                     : {"type": "Float"  },
-      "openingHours"            : {"type": "String" },
-      "avgStayMinutes"          : {"type": "Float"  },
-      "priceLevel"              : {"type": "Float"  },
-      "avgTastingPricePerPerson": {"type": "Float"  },
-      "avgMealPricePerPerson"   : {"type": "Float"  },
-      "avgBottlePrice"          : {"type": "Float"  }
+      "lon"                     : {"type": "Float"  }
     },
     "default": {}
   },
@@ -40,6 +33,6 @@
   "budgetMax": {"type": "Integer"},
   "timeMax": {"type": "Integer"},
   "distanceMax": {"type": "Integer", "default": null},
-  "costScenario": {"type": "String"},
+  "routePace": {"type": "String"},
   "objectiveFunction": {"type": "String"}
 }
