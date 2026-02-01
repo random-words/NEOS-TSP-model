@@ -1,0 +1,137 @@
+{
+  "numberOfNodes": 5,
+  "allNodes": [
+    {
+      "id": "1",
+      "name": "Середнянський замок",
+      "lat": 48.5389965,
+      "lon": 22.4974842,
+      "openingHours": "always_open",
+      "avgStayMinutes": 90.0,
+      "priceLevel": 475.0,
+      "avgTastingPricePerPerson": 250.0,
+      "avgMealPricePerPerson": 300.0,
+      "avgBottlePrice": 200.0
+    },
+    {
+      "id": "2",
+      "name": "Водоспад Шипіт",
+      "lat": 48.6563799,
+      "lon": 23.2689705,
+      "openingHours": null,
+      "avgStayMinutes": 180.0,
+      "priceLevel": 600.0,
+      "avgTastingPricePerPerson": 300.0,
+      "avgMealPricePerPerson": 500.0,
+      "avgBottlePrice": 200.0
+    },
+    {
+      "id": "3",
+      "name": "Дім дегустацій – Шато Чизай",
+      "lat": 48.2263072,
+      "lon": 22.6402141,
+      "openingHours": "9 am–6 pm",
+      "avgStayMinutes": 90.0,
+      "priceLevel": 1000.0,
+      "avgTastingPricePerPerson": 400.0,
+      "avgMealPricePerPerson": null,
+      "avgBottlePrice": 600.0
+    },
+    {
+      "id": "4",
+      "name": "Середнянські винні погреби",
+      "lat": 48.5374686,
+      "lon": 22.5059702,
+      "openingHours": "8 am–12 pm",
+      "avgStayMinutes": 90.0,
+      "priceLevel": 600.0,
+      "avgTastingPricePerPerson": 300.0,
+      "avgMealPricePerPerson": 400.0,
+      "avgBottlePrice": 250.0
+    },
+    {
+      "id": "5",
+      "name": "Будинок вина \"Берегвідек\"",
+      "lat": 48.2521733,
+      "lon": 22.6267548,
+      "openingHours": "8 am–8 pm",
+      "avgStayMinutes": 60.0,
+      "priceLevel": 800.0,
+      "avgTastingPricePerPerson": 800.0,
+      "avgMealPricePerPerson": 800.0,
+      "avgBottlePrice": null
+    },
+    {
+      "id": "6",
+      "name": "Деренівська Купіль",
+      "lat": 48.5645794,
+      "lon": 22.4429648,
+      "openingHours": "9 am–11 pm",
+      "avgStayMinutes": 60.0,
+      "priceLevel": 1800.0,
+      "avgTastingPricePerPerson": 300.0,
+      "avgMealPricePerPerson": 800.0,
+      "avgBottlePrice": 1250.0
+    },
+    {
+      "id": "7",
+      "name": "Мукачівський Замок",
+      "lat": 48.4316545,
+      "lon": 22.6874766,
+      "openingHours": "9 am–5 pm",
+      "avgStayMinutes": 150.0,
+      "priceLevel": 160.0,
+      "avgTastingPricePerPerson": 120.0,
+      "avgMealPricePerPerson": 200.0,
+      "avgBottlePrice": null
+    },
+    {
+      "id": "8",
+      "name": "Ресторан \"Chizay. Мала Гора\"",
+      "lat": 48.1836854,
+      "lon": 22.6579374,
+      "openingHours": "12 pm–11 pm",
+      "avgStayMinutes": 90.0,
+      "priceLevel": 1000.0,
+      "avgTastingPricePerPerson": 400.0,
+      "avgMealPricePerPerson": null,
+      "avgBottlePrice": 600.0
+    },
+    {
+      "id": "9",
+      "name": "Дегустаційний зал «СироВина», Ужгород",
+      "lat": 48.6233443,
+      "lon": 22.3017955,
+      "openingHours": "11 am–10 pm",
+      "avgStayMinutes": 90.0,
+      "priceLevel": 850.0,
+      "avgTastingPricePerPerson": 400.0,
+      "avgMealPricePerPerson": 400.0,
+      "avgBottlePrice": 450.0
+    },
+    {
+      "id": "10",
+      "name": "Винні підвали сім'ї Урста (біля Мужієва)",
+      "lat": 48.1730381,
+      "lon": 22.7428415,
+      "openingHours": "always_open",
+      "avgStayMinutes": 90.0,
+      "priceLevel": 150.0,
+      "avgTastingPricePerPerson": 150.0,
+      "avgMealPricePerPerson": 150.0,
+      "avgBottlePrice": null
+    }
+  ],
+  "startNode": {
+    "id": "1",
+    "name": "Середнянський замок",
+    "lat": 48.5389965,
+    "lon": 22.4974842
+  },
+  "groupSize": 2,
+  "budgetMax": 35000,
+  "timeMax": 1440,
+  "distanceMax": null,
+  "routePace": 90,
+  "objectiveFunction": "Budget"
+}
