@@ -1,24 +1,25 @@
-from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
+from .serializers import OptimizerRequestSerializer, OptimizerResponseSerializer
 from engine_api.math_service.service import KCycleTSPService
 
-class PingView(APIView):
-    def get(self, request):
-        return Response({"ok": True, "msg": "tsp api is alive"}, status=status.HTTP_200_OK)
+
+
 
 
 class SolveView(APIView):
     def post(self, request):
-        try:
-            result = KCycleTSPService().run(request.data)
-        except Exception as e:
-            return Response({"ok": False, "error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        req_ser = OptimizerRequestSerializer(data=request.data)
+        req_ser.is_valid(raise_exception=True)
 
-        if not result.get("ok"):
-            return Response(result, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+        service = KCycleTSPService()
+        result = service.run(req_ser.validated_data)
 
-        return Response(result, status=status.HTTP_200_OK)
+        resp_ser = OptimizerResponseSerializer(data=result)
+        resp_ser.is_valid(raise_exception=True)
+
+        http_status = status.HTTP_200_OK if result.get("resCode") == 200 else status.HTTP_500_INTERNAL_SERVER_ERROR
+        return Response(resp_ser.data, status=http_status)
 

@@ -330,4 +330,44 @@ class KCycleTSPRunner:
         coords = coords_dict(self.nodes, self.xcoord_data, self.ycoord_data)
         plot_tsp_tour(coords, self.tour, title=title)
 
+    def load_data_from_dataframe(self, df: pd.DataFrame, s_value: int, k_value: int):
+        df = df.copy()
+
+        # чистимо ключові поля
+        for col in ["id", "lat", "lon", "avgStayMinutes"]:
+            if col in df.columns:
+                df[col] = pd.to_numeric(df[col], errors="coerce")
+
+        df = df.dropna(subset=["id", "lat", "lon"]).copy()
+        df["id"] = df["id"].astype(int)
+        df = df.sort_values("id").reset_index(drop=True)
+
+        nodes, xcoord_data, ycoord_data = load_geo_dataframe(
+            df, id_col="id", lat_col="lat", lon_col="lon", R=6371.0
+        )
+
+        df = self.add_check_ranges(df)
+        df["cost_pp"] = pd.to_numeric(df["check_max"], errors="coerce").fillna(0.0)
+        cost_per_person = dict(zip(df["id"], df["cost_pp"]))
+
+        df["avgStayMinutes"] = pd.to_numeric(df.get("avgStayMinutes", 0), errors="coerce").fillna(0.0)
+        stay_minutes = dict(zip(df["id"], df["avgStayMinutes"]))
+
+        if s_value not in nodes:
+            s_value = min(nodes)
+
+        if k_value > len(nodes) - 1:
+            k_value = len(nodes) - 1
+
+        self.df = df
+        self.nodes = nodes
+        self.xcoord_data = xcoord_data
+        self.ycoord_data = ycoord_data
+        self.cost_per_person = cost_per_person
+        self.stay_minutes = stay_minutes
+        self.s_value = s_value
+        self.k_value = k_value
+
+        return nodes, xcoord_data, ycoord_data, cost_per_person, stay_minutes
+
 
