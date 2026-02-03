@@ -1,7 +1,9 @@
 {
   "objective": 86.78999999999999,
   "totalDistance": 86.78999999999999,
-  "totalBudget": 12440.0,
+  "totalBudget": 12845.74325,
+  "locationsCost": 12440.00,
+  "fuelCost": 405.74,
   "totalTime": 554.148,
   "tour": [
     {

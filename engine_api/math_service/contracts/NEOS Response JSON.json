@@ -2,6 +2,8 @@
   "objective": {"type": "Float"},
   "totalDistance": {"type": "Float", "metrics": "Kilometers"},
   "totalBudget": {"type": "Float", "metrics": "UAH"},
+  "locationsCost": {"type": "Float", "metrics": "UAH"},
+  "fuelCost": {"type": "Float", "metrics": "UAH"},
   "totalTime": {"type": "Float", "metrics": "Minutes"},
   "tour": {
     "type": [],
