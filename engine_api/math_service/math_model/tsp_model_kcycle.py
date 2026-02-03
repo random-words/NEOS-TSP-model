@@ -145,10 +145,13 @@ def attach_total_distance(m):
     return m.total_distance
 
 
-def attach_budget(m, cost_per_person, group_size=1):
+def attach_budget(m, cost_per_person, group_size=1, fuel_consumption_l_100km=0, fuel_price_uah_l=0):
     """
-    total_budget = group_size * sum_{i != s} cost[i] * y[i]
-    cost_per_person: dict {node: cost} (на 1 людину)
+    Оновлена логіка бюджету:
+    Total Budget = (Витрати на місцях * Group Size) + (Витрати на паливо)
+
+    fuel_consumption_l_100km: витрати авто (літрів на 100 км)
+    fuel_price_uah_l: ціна палива (грн за літр)
     """
     # s_val = value(m.s)
     s_val = m.s_val_attr
@@ -162,9 +165,23 @@ def attach_budget(m, cost_per_person, group_size=1):
         mutable=True
     )
 
-    m.total_budget = Expression(
+    # Вартість 1 км шляху = (літри на 100 км / 100) * ціна літра
+    cost_per_km = (float(fuel_consumption_l_100km) / 100.0) * float(fuel_price_uah_l)
+    m.fuel_cost_per_km = Param(initialize=cost_per_km, mutable=True, within=NonNegativeReals)
+
+    m.location_cost = Expression(
         expr=m.group_size * sum(m.cost_pp[i] * m.y[i] for i in m.NODES if i != s_val)
     )
+
+    # Total Distance * Cost per km
+    m.travel_cost = Expression(
+        expr=sum(m.d[i, j] * m.x[i, j] for (i, j) in m.ARCS) * m.fuel_cost_per_km
+    )
+
+    m.total_budget = Expression(
+        expr=m.location_cost + m.travel_cost
+    )
+
     return m.total_budget
 
 

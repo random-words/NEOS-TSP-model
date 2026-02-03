@@ -161,7 +161,8 @@ class KCycleTSPRunner:
     # ----------------------------
     # MODEL BUILD
     # ----------------------------
-    def build_model(self, CONNECTIVITY, group_size, speed_kmph, route_pace):
+    def build_model(self, CONNECTIVITY, group_size, speed_kmph, route_pace,
+                    fuel_consumption=0, fuel_price=0):
         nodes = self.nodes
         xcoord_data = self.xcoord_data
         ycoord_data = self.ycoord_data
@@ -185,7 +186,8 @@ class KCycleTSPRunner:
 
         # expressions for constraints / reporting
         attach_total_distance(model)
-        attach_budget(model, self.cost_per_person, group_size=group_size)
+        attach_budget(model, self.cost_per_person, group_size=group_size,
+                      fuel_consumption_l_100km=fuel_consumption, fuel_price_uah_l=fuel_price)
         attach_time(model, route_pace=route_pace, speed_kmph=speed_kmph)
 
         self.d_data = d_data
@@ -311,6 +313,11 @@ class KCycleTSPRunner:
 
         print("Total distance =", value(model.total_distance), "km")
         print("Total budget   =", value(model.total_budget), "UAH")
+
+        if hasattr(model, "location_cost"):
+            print(f"  - Locations: {value(model.location_cost):.2f} UAH")
+            print(f"  - Fuel:      {value(model.travel_cost):.2f} UAH")
+
         print("Total time     =", value(model.total_time), "minutes")
 
     def extract_tour(self, threshold=0.5):

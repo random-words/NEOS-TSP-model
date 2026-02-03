@@ -17,6 +17,10 @@ k_value = 5
 # ----------------------------
 # CONFIG: travel/time/budget parameters
 # ----------------------------
+
+fuel_cons = 8.5  # liters per 100 km
+fuel_price = 55.0 # UAH per liter
+
 group_size = 2
 speed_kmph = 50.0
 budget_max = 35000
