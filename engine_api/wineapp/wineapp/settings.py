@@ -11,7 +11,9 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from wineapp.logging_formatters import JsonFormatter
 
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -49,6 +51,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "wineapp.middleware.JsonAuditMiddleware",
 ]
 
 ROOT_URLCONF = 'wineapp.urls'
@@ -122,3 +126,43 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+import os
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+LOG_DIR = BASE_DIR / "logs"
+LOG_DIR.mkdir(parents=True, exist_ok=True)
+
+API_AUDIT_LOG = LOG_DIR / "audit.jsonl"
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "json": {
+            "()": "wineapp.logging_formatters.JsonFormatter",
+        }
+    },
+    "handlers": {
+        "audit_file": {
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": str(API_AUDIT_LOG),
+            "maxBytes": 10 * 1024 * 1024,
+            "backupCount": 5,
+            "formatter": "json",
+            "level": "INFO",
+            "encoding": "utf-8",
+        },
+    },
+    "loggers": {
+        "api.audit": {
+            "handlers": ["audit_file"],
+            "level": "INFO",
+            "propagate": False,
+        }
+    },
+}
+
