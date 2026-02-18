@@ -15,6 +15,7 @@ from engine_api.math_service.math_model.tsp_model_kcycle import (
     attach_total_distance, attach_budget, attach_time
 )
 
+from engine_api.math_service.math_model.osrm_helpers import get_osrm_matrices
 
 
 class KCycleTSPRunner:
@@ -162,35 +163,75 @@ class KCycleTSPRunner:
     # MODEL BUILD
     # ----------------------------
     def build_model(self, CONNECTIVITY, group_size, speed_kmph, route_pace,
-                    fuel_consumption=0, fuel_price=0):
+                    fuel_consumption=0, fuel_price=0, use_osrm=False):
+
         nodes = self.nodes
-        xcoord_data = self.xcoord_data
-        ycoord_data = self.ycoord_data
+
+        # Це ПРОЕКЦІЯ (км) - для математики, якщо OSRM впаде
+        xcoord_math = self.xcoord_data
+        ycoord_math = self.ycoord_data
 
         s_value = self.s_value
         k_value = self.k_value
 
-        d_data = build_distance_matrix(nodes, xcoord_data, ycoord_data, rounding=2)
-        # print("Distance matrix elements:", len(d_data))
+        # --- OSRM ЛОГІКА ---
+        dist_matrix = None
+        time_matrix = None
+
+        if use_osrm:
+            if self.df is not None:
+                print("🌐 Connecting to OSRM (Public API)...")
+
+                # Беремо РЕАЛЬНІ координати з DataFrame
+                # Створюємо словники {id: coord}
+                real_lons = dict(zip(self.df["id"], self.df["lon"]))
+                real_lats = dict(zip(self.df["id"], self.df["lat"]))
+
+                # Передаємо реальні lat/lon
+                osrm_dist, osrm_time = get_osrm_matrices(nodes, real_lons, real_lats)
+
+                if osrm_dist and osrm_time:
+                    dist_matrix = osrm_dist
+                    time_matrix = osrm_time
+                    print("✅ Using OSRM real-world data.")
+                else:
+                    print("⚠️ OSRM failed. Falling back to simple math.")
+            else:
+                print("⚠️ Cannot use OSRM: No original DataFrame (TSPLIB data?). Using math.")
+
+        # Фолбек (якщо OSRM вимкнено або не спрацював)
+        if dist_matrix is None:
+            dist_matrix = build_distance_matrix(nodes, xcoord_math, ycoord_math, rounding=2)
+            # time_matrix лишається None -> attach_time використає середню швидкість
+
+        # -------------------
 
         model = create_tsp_model(
             nodes=nodes,
             s=s_value,
             k=k_value,
-            xcoord_data=xcoord_data,
-            ycoord_data=ycoord_data,
-            d_data=d_data
+            xcoord_data=xcoord_math,  # Для візуалізації (plot) лишаємо проекцію
+            ycoord_data=ycoord_math,
+            d_data=dist_matrix  # Сюди піде або OSRM, або Евклід
         )
 
         set_connectivity(model, CONNECTIVITY)
 
-        # expressions for constraints / reporting
         attach_total_distance(model)
-        attach_budget(model, self.cost_per_person, group_size=group_size,
-                      fuel_consumption_l_100km=fuel_consumption, fuel_price_uah_l=fuel_price)
-        attach_time(model, route_pace=route_pace, speed_kmph=speed_kmph)
 
-        self.d_data = d_data
+        # Бюджет
+        attach_budget(
+            model,
+            self.cost_per_person,
+            group_size=group_size,
+            fuel_consumption_l_100km=fuel_consumption,
+            fuel_price_uah_l=fuel_price
+        )
+
+        # Час
+        attach_time(model, route_pace=route_pace, time_data=time_matrix, speed_kmph=speed_kmph)
+
+        self.d_data = dist_matrix
         self.model = model
         return model
 

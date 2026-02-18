@@ -185,22 +185,30 @@ def attach_budget(m, cost_per_person, group_size=1, fuel_consumption_l_100km=0, 
     return m.total_budget
 
 
-def attach_time(m, route_pace, speed_kmph=40.0):
-    """
-    Stay Time = (кількість активних точок) * route_pace
-    Оскільки ми маємо обмеження con4 (сума y = k), то сумарний час зупинок
-    буде рівно k * route_pace.
-
-    Але ми прив'язуємо це до змінних y[i], щоб солвер "відчував" вагу кожної точки.
-    """
+def attach_time(m, route_pace, time_data=None, speed_kmph=40.0):
     s_val = m.s_val_attr
-    speed = float(speed_kmph)
 
     m.route_pace = Param(initialize=float(route_pace), mutable=True, within=NonNegativeReals)
 
-    m.travel_time = Expression(
-        expr=sum((60.0 * m.d[i, j] / speed) * m.x[i, j] for (i, j) in m.ARCS)
-    )
+    if time_data is not None:
+        # 1. Точний час від OSRM
+        # time_data - це словник {(i,j): minutes}
+        m.time_matrix = Param(
+            m.ARCS,
+            initialize=lambda m_, i, j: float(time_data.get((i, j), 0)),
+            within=NonNegativeReals
+        )
+
+        m.travel_time = Expression(
+            expr=sum(m.time_matrix[i, j] * m.x[i, j] for (i, j) in m.ARCS)
+        )
+    else:
+        # 2. Приблизний час (через відстань і швидкість)
+        speed = float(speed_kmph)
+        # 60 * dist / speed
+        m.travel_time = Expression(
+            expr=sum((60.0 * m.d[i, j] / speed) * m.x[i, j] for (i, j) in m.ARCS)
+        )
 
     m.stay_time = Expression(
         expr=sum(m.route_pace * m.y[i] for i in m.NODES if i != s_val)
