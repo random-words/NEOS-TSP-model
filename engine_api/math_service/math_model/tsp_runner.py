@@ -347,19 +347,22 @@ class KCycleTSPRunner:
 
     def print_metrics(self):
         model = self.model
-        if hasattr(model, "obj"):
-            print("Objective =", value(model.obj))
-        else:
-            print("Objective =", value(model.dk_min))
 
-        print("Total distance =", value(model.total_distance), "km")
-        print("Total budget   =", value(model.total_budget), "UAH")
+        if hasattr(model, "obj") and model.obj.active:
+            print(f"Objective = {value(model.obj):.2f}")
+        elif hasattr(model, "dk_min") and model.dk_min.active:
+            print(f"Objective = {value(model.dk_min):.2f}")
+        else:
+            print("Objective = Unknown")
+
+        print(f"Total distance = {value(model.total_distance):.3f} km")
+        print(f"Total budget   = {value(model.total_budget):.2f} UAH")
 
         if hasattr(model, "location_cost"):
             print(f"  - Locations: {value(model.location_cost):.2f} UAH")
             print(f"  - Fuel:      {value(model.travel_cost):.2f} UAH")
 
-        print("Total time     =", value(model.total_time), "minutes")
+        print(f"Total time     = {value(model.total_time):.1f} minutes")
 
     def extract_tour(self, threshold=0.5):
         edges = selected_edges_from_model(self.model, threshold=threshold)
