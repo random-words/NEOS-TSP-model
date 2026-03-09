@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  # 1. База даних MongoDB
+  mongodb:
+    image: mongo:latest
+    container_name: tsp_mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db # Зберігаємо дані БД навіть після перезапуску контейнера
+    restart: unless-stopped
+
+  # 2. Математична модель (Django)
+  django_service:
+    build:
+      context: .
+      dockerfile: ./engine_api/Dockerfile
+    container_name: tsp_django
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+  # 3. Головний бекенд (NestJS)
+  nestjs_service:
+    build:
+      context: ./node_api # Шлях до папки з Node.js (зміни, якщо він інший)
+    container_name: tsp_nestjs
+    ports:
+      - "3000:3000"
+    environment:
+      # Вказуємо змінну оточення для підключення до MongoDB всередині Docker-мережі
+      - MONGODB_URI=mongodb://mongodb:27017/tsp_db
+      # Вказуємо змінну оточення для звернень до Django
+      - DJANGO_API_URL=http://django_service:8000
+    depends_on:
+      - mongodb
+      - django_service
+    restart: unless-stopped
+
+# Оголошуємо volume для збереження даних MongoDB
+volumes:
+  mongo_data:
